@@ -2,7 +2,7 @@
 
 Um dashboard dinâmico e moderno construído para simplificar o controle e a gestão de inventário. A aplicação oferece uma interface visual intuitiva para monitorar métricas chave e gerenciar produtos de forma eficiente.
 
-![StockManager Dashboard](https://imgur.com/gallery/dash-ZiELlGk)
+![StockManager Dashboard](https://i.imgur.com/EWVD3J9.png)
 
 ## ✨ Features Principais
 
