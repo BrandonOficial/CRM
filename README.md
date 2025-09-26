@@ -1,27 +1,8 @@
-## StockManager - Dashboard de Gestão de Estoque
-Um dashboard dinâmico e moderno construído para simplificar o controle e a gestão de inventário. A aplicação oferece uma interface visual intuitiva para monitorar métricas chave e gerenciar produtos de forma eficiente.
-
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/EBO5eiV" data-context="false" ><a href="//imgur.com/a/EBO5eiV"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
-
-✨ Features Principais
-Dashboard Interativo: Visualize métricas essenciais como total de itens, produtos com estoque baixo, valor total do inventário e taxa de rotatividade.
-
-Tabela de Itens Dinâmica: Visualize e gerencie todos os itens do seu estoque com detalhes como SKU, categoria, quantidade, fornecedor e status.
-
-Operações CRUD: Crie, edite e exclua itens do estoque de forma simples através de um formulário em modal.
-
-Validação de Formulário: Garante a integridade dos dados com validação de schema utilizando Zod e React Hook Form.
-
-Status Visual: Identifique rapidamente o estado de cada item (Em Estoque, Estoque Baixo, Sem Estoque) com badges coloridas.
-
-Design Moderno: Interface construída com Shadcn/UI, garantindo um visual limpo, profissional e responsivo.
-
-🚀 Tecnologias Utilizadas
-Este projeto foi construído com as seguintes tecnologias:# StockManager - Dashboard de Gestão de Estoque
+# StockManager - Dashboard de Gestão de Estoque
 
 Um dashboard dinâmico e moderno construído para simplificar o controle e a gestão de inventário. A aplicação oferece uma interface visual intuitiva para monitorar métricas chave e gerenciar produtos de forma eficiente.
 
-![StockManager Dashboard](https://i.imgur.com/your-image-url.png)
+![StockManager Dashboard](https://imgur.com/a/EBO5eiV)
 > *Substitua pelo link da sua imagem no Imgur*
 
 ## ✨ Features Principais
@@ -107,55 +88,3 @@ Contribuições são sempre bem-vindas! Para contribuir:
 ---
 
 ⭐ Se este projeto te ajudou, considere dar uma estrela no repositório!
-
-Framework: Next.js
-
-Linguagem: TypeScript
-
-UI Library: React
-
-Estilização: Tailwind CSS
-
-Componentes: Shadcn/UI
-
-Gerenciamento de Formulários: React Hook Form
-
-Validação de Schema: Zod
-
-Ícones: Lucide React
-
-⚙️ Como Executar o Projeto Localmente
-Para rodar este projeto na sua máquina, siga os passos abaixo.
-
-Pré-requisitos
-Node.js (versão 18.17 ou superior)
-
-pnpm (ou npm/yarn)
-
-Instalação
-Clone o repositório:
-
-Bash
-
-git clone https://github.com/BrandonOficial/CRM.git
-cd CRM
-Instale as dependências:
-
-Bash
-
-# Se estiver usando pnpm
-pnpm install
-
-# Ou com npm
-npm install
-
-# Ou com yarn
-yarn install
-Rodando a Aplicação
-Inicie o servidor de desenvolvimento:
-
-Bash
-
-pnpm dev
-Abra no navegador:
-Acesse http://localhost:3000 no seu navegador para ver a aplicação rodando.
