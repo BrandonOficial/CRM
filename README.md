@@ -1,7 +1,7 @@
 ## StockManager - Dashboard de Gestão de Estoque
 Um dashboard dinâmico e moderno construído para simplificar o controle e a gestão de inventário. A aplicação oferece uma interface visual intuitiva para monitorar métricas chave e gerenciar produtos de forma eficiente.
 
-[(Dica: Tire um print da sua aplicação, suba em um site como o Imgur e cole o link aqui)](https://imgur.com/a/EBO5eiV)
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/EBO5eiV" data-context="false" ><a href="//imgur.com/a/EBO5eiV"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 ✨ Features Principais
 Dashboard Interativo: Visualize métricas essenciais como total de itens, produtos com estoque baixo, valor total do inventário e taxa de rotatividade.
