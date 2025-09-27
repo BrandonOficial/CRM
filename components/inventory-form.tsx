@@ -1,4 +1,5 @@
-import { useState } from "react";
+// components/inventory-form.tsx
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -29,6 +30,7 @@ import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import type { InventoryItem } from "@/contexts/inventory-context";
 
 const inventorySchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -47,6 +49,7 @@ type InventoryFormData = z.infer<typeof inventorySchema>;
 interface InventoryFormProps {
   onAddItem?: (item: InventoryFormData) => void;
   onEditItem?: (id: string, item: InventoryFormData) => void;
+  onClose?: () => void;
   editItem?: {
     id: string;
     name: string;
@@ -71,6 +74,7 @@ const categories = [
 export function InventoryForm({
   onAddItem,
   onEditItem,
+  onClose,
   editItem,
 }: InventoryFormProps) {
   const [open, setOpen] = useState(false);
@@ -78,26 +82,32 @@ export function InventoryForm({
 
   const form = useForm<InventoryFormData>({
     resolver: zodResolver(inventorySchema),
-    defaultValues: editItem
-      ? {
-          name: editItem.name,
-          category: editItem.category,
-          sku: editItem.sku,
-          quantity: editItem.quantity,
-          minQuantity: editItem.minQuantity,
-          price: editItem.price,
-          supplier: editItem.supplier,
-        }
-      : {
-          name: "",
-          category: "",
-          sku: "",
-          quantity: 0,
-          minQuantity: 0,
-          price: 0,
-          supplier: "",
-        },
+    defaultValues: {
+      name: "",
+      category: "",
+      sku: "",
+      quantity: 0,
+      minQuantity: 0,
+      price: 0,
+      supplier: "",
+    },
   });
+
+  // Atualizar o formulário quando editItem muda
+  useEffect(() => {
+    if (editItem) {
+      form.reset({
+        name: editItem.name,
+        category: editItem.category,
+        sku: editItem.sku,
+        quantity: editItem.quantity,
+        minQuantity: editItem.minQuantity,
+        price: editItem.price,
+        supplier: editItem.supplier,
+      });
+      setOpen(true);
+    }
+  }, [editItem, form]);
 
   const onSubmit = (data: InventoryFormData) => {
     if (isEditing && editItem) {
@@ -107,16 +117,32 @@ export function InventoryForm({
     }
     form.reset();
     setOpen(false);
+    onClose?.();
+  };
+
+  const handleCancel = () => {
+    form.reset();
+    setOpen(false);
+    onClose?.();
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
+      onClose?.();
+    }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2">
-          <Plus className="h-4 w-4" />
-          {isEditing ? "Editar Item" : "Adicionar Item"}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      {!isEditing && (
+        <DialogTrigger asChild>
+          <Button className="gap-2">
+            <Plus className="h-4 w-4" />
+            Adicionar Item
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
@@ -153,10 +179,7 @@ export function InventoryForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoria</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
@@ -270,11 +293,7 @@ export function InventoryForm({
             />
 
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-              >
+              <Button type="button" variant="outline" onClick={handleCancel}>
                 Cancelar
               </Button>
               <Button type="submit">

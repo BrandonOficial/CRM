@@ -1,6 +1,10 @@
+// app/page.tsx
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { MetricsCard } from "@/components/metrics-card";
 import { InventoryTable } from "@/components/inventory-table";
+import { InventoryProvider, useInventory } from "@/contexts/inventory-context";
 import {
   ChevronDown,
   Package,
@@ -9,7 +13,10 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-export default function Page() {
+function DashboardContent() {
+  const { getMetrics } = useInventory();
+  const metrics = getMetrics();
+
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="grid lg:grid-cols-[160px_1fr]">
@@ -35,37 +42,45 @@ export default function Page() {
           <div className="grid gap-4 md:grid-cols-4">
             <MetricsCard
               title="Total de Itens"
-              value="5"
+              value={metrics.totalItems.toString()}
               subtitle="Produtos cadastrados"
+              icon={<Package className="h-4 w-4 text-blue-500" />}
             />
             <MetricsCard
               title="Itens em Baixa"
-              value="2"
+              value={metrics.lowStockItems.toString()}
               subtitle="Precisam de reposição"
               icon={<AlertTriangle className="h-4 w-4 text-yellow-500" />}
               trend={{
-                value: "Atenção necessária",
-                isPositive: false,
+                value:
+                  metrics.lowStockItems > 0
+                    ? "Atenção necessária"
+                    : "Estoque adequado",
+                isPositive: metrics.lowStockItems === 0,
               }}
             />
             <MetricsCard
               title="Valor Total"
-              value="R$ 4.194,80"
+              value={`R$ ${metrics.totalValue.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+              })}`}
               subtitle="Inventário atual"
               icon={<DollarSign className="h-4 w-4 text-green-500" />}
               trend={{
-                value: "+5.2% vs mês anterior",
+                value: "Valor atualizado",
                 isPositive: true,
               }}
             />
             <MetricsCard
               title="Taxa de Rotatividade"
-              value="78%"
-              subtitle="Itens movimentados"
+              value={`${metrics.turnoverRate}%`}
+              subtitle="Itens em movimento"
               icon={<TrendingUp className="h-4 w-4 text-blue-500" />}
               trend={{
-                value: "+12% vs mês anterior",
-                isPositive: true,
+                value: `${
+                  metrics.turnoverRate >= 70 ? "Boa" : "Baixa"
+                } rotatividade`,
+                isPositive: metrics.turnoverRate >= 70,
               }}
             />
           </div>
@@ -75,5 +90,13 @@ export default function Page() {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <InventoryProvider>
+      <DashboardContent />
+    </InventoryProvider>
   );
 }

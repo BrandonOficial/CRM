@@ -1,3 +1,4 @@
+// components/inventory-table.tsx
 "use client";
 
 import { useState } from "react";
@@ -12,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Plus, Edit, Trash2 } from "lucide-react";
+import { MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,82 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { InventoryForm } from "@/components/inventory-form";
-
-interface InventoryItem {
-  id: string;
-  name: string;
-  category: string;
-  sku: string;
-  quantity: number;
-  minQuantity: number;
-  price: number;
-  supplier: string;
-  lastUpdated: string;
-  status: "in-stock" | "low-stock" | "out-of-stock";
-}
-
-const inventoryItems: InventoryItem[] = [
-  {
-    id: "1",
-    name: "Notebook Dell Inspiron",
-    category: "Eletrônicos",
-    sku: "DELL-INS-001",
-    quantity: 15,
-    minQuantity: 5,
-    price: 2500.0,
-    supplier: "Dell Brasil",
-    lastUpdated: "",
-    status: "in-stock",
-  },
-  {
-    id: "2",
-    name: "Mouse Logitech MX3",
-    category: "Periféricos",
-    sku: "LOG-MX3-002",
-    quantity: 3,
-    minQuantity: 10,
-    price: 299.9,
-    supplier: "Logitech",
-    lastUpdated: "",
-    status: "low-stock",
-  },
-  {
-    id: "3",
-    name: "Teclado Mecânico Razer",
-    category: "Periféricos",
-    sku: "RAZ-KB-003",
-    quantity: 0,
-    minQuantity: 8,
-    price: 450.0,
-    supplier: "Razer",
-    lastUpdated: "",
-    status: "out-of-stock",
-  },
-  {
-    id: "4",
-    name: 'Monitor Samsung 24"',
-    category: "Eletrônicos",
-    sku: "SAM-M24-004",
-    quantity: 8,
-    minQuantity: 3,
-    price: 899.9,
-    supplier: "Samsung",
-    lastUpdated: "",
-    status: "in-stock",
-  },
-  {
-    id: "5",
-    name: "Cabo HDMI 2.1",
-    category: "Cabo e Conectores",
-    sku: "CAB-HDMI-005",
-    quantity: 2,
-    minQuantity: 15,
-    price: 45.0,
-    supplier: "TechCables",
-    lastUpdated: "",
-    status: "low-stock",
-  },
-];
+import { useInventory, type InventoryItem } from "@/contexts/inventory-context";
 
 function getStatusBadge(status: InventoryItem["status"]) {
   switch (status) {
@@ -124,45 +50,25 @@ function getStatusColor(
 }
 
 export function InventoryTable() {
-  const [items, setItems] = useState<InventoryItem[]>(inventoryItems);
+  const { items, addItem, editItem, deleteItem } = useInventory();
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
 
   const handleAddItem = (
     newItem: Omit<InventoryItem, "id" | "lastUpdated" | "status">
   ) => {
-    const item: InventoryItem = {
-      ...newItem,
-      id: Date.now().toString(),
-      lastUpdated: new Date().toLocaleDateString("pt-BR"),
-      status: getStatusColor(newItem.quantity, newItem.minQuantity),
-    };
-    setItems([...items, item]);
+    addItem(newItem);
   };
 
   const handleEditItem = (
     id: string,
     updatedItem: Omit<InventoryItem, "id" | "lastUpdated" | "status">
   ) => {
-    setItems(
-      items.map((item) =>
-        item.id === id
-          ? {
-              ...updatedItem,
-              id,
-              lastUpdated: new Date().toLocaleDateString("pt-BR"),
-              status: getStatusColor(
-                updatedItem.quantity,
-                updatedItem.minQuantity
-              ),
-            }
-          : item
-      )
-    );
+    editItem(id, updatedItem);
     setEditingItem(null);
   };
 
   const handleDeleteItem = (id: string) => {
-    setItems(items.filter((item) => item.id !== id));
+    deleteItem(id);
   };
 
   return (
